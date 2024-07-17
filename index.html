@@ -5,6 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="./script.js"></script>
+    <style>
+      .buttons {
+        display: flex;
+        gap: 1rem;
+      }
+      button {
+        padding: 1rem 2rem;
+        color: #fff;
+        border-radius: 0.5rem;
+        border: 0;
+        font-weight: bold;
+        background-color: #0369a1;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #1f2937;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        width: 100%;
+      }
+      html {
+        font-family: Arial;
+        height: 100%;
+        background-color: #111827;
+        color: white;
+        overflow: hidden;
+      }
+
+      body {
+        height: 100%;
+        max-width: 500px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        /* justify-content: center; */
+        flex-direction: column;
+        padding: 2rem;
+        gap: 2rem;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="header">
+      <h3>Rock, Paper, Scissors</h3>
+      <button>Reset</button>
+    </div>
+    <div>
+      <div class="buttons">
+        <button data-choice="rock">Rock</button
+        ><button data-choice="paper">Paper</button
+        ><button data-choice="scissors">Scissors</button>
+      </div>
+    </div>
+  </body>
 </html>
