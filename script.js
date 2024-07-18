@@ -1,60 +1,96 @@
-let humanScore = 0;
-let computerScore = 0;
+document.addEventListener('DOMContentLoaded', () => {
+  const choices = ['rock', 'paper', 'scissors'];
+  const buttons = document.querySelectorAll('.buttons button');
+  const humanChoice = document.querySelector('.human .choice');
+  const computerChoice = document.querySelector('.computer .choice');
+  const message = document.querySelector('.message');
+  const humanScore = document.querySelector('.human-score');
+  const computerScore = document.querySelector('.computer-score');
+  const newGameButton = document.querySelector('.reset');
 
-const choices = ['rock', 'paper', 'scissors'];
+  buttons.forEach((button) => {
+    button.addEventListener('click', function (e) {
+      message.textContent = '';
+      computerChoice.textContent = '';
+      getHumanChoice(e);
+    });
+  });
 
-function getHumanChoice() {
-  let choice;
-  while (true) {
-    choice = prompt('Rock, Paper, or Scissors').toLowerCase();
-    if (choices.includes(choice)) {
-      return choice;
+  newGameButton.addEventListener('click', resetGame);
+
+  function getHumanChoice(event) {
+    const selectionDataAttr = event.currentTarget.dataset.choice;
+    humanChoice.textContent = selectionDataAttr;
+
+    setTimeout(() => {
+      getComputerChoice(selectionDataAttr);
+    }, 1000);
+  }
+
+  function getComputerChoice(humanChoice) {
+    const randNum = Math.floor(Math.random() * 3);
+    computerChoice.textContent = choices[randNum];
+
+    playRound(humanChoice, choices[randNum]);
+  }
+
+  let humanScoreCount = 0;
+  let computerScoreCount = 0;
+
+  function playRound(human, computer) {
+    switch (true) {
+      case human == computer:
+        message.textContent = 'Draw!';
+        break;
+      case human == 'rock' && computer == 'paper':
+      case human == 'paper' && computer == 'scissors':
+      case human == 'scissors' && computer == 'rock':
+        message.textContent = 'You Lose!';
+        computerScoreCount++;
+        computerScore.textContent = computerScoreCount;
+        break;
+      case human == 'rock' && computer == 'scissors':
+      case human == 'paper' && computer == 'rock':
+      case human == 'scissors' && computer == 'paper':
+        message.textContent = 'You Win!';
+        humanScoreCount++;
+        humanScore.textContent = humanScoreCount;
+        break;
     }
-    console.log('Not a vaild entry, please try again');
+    checkResults();
   }
-}
 
-function getComputerChoice() {
-  const randNum = Math.floor(Math.random() * 3);
-  return choices[randNum];
-}
+  function checkResults() {
+    if (humanScoreCount == 5) {
+      message.textContent = 'You won the game!';
+      newGameButton.style.display = 'block';
+      disableButtons();
+    }
+    if (computerScoreCount == 5) {
+      message.textContent = 'You lost the game!';
+      newGameButton.style.display = 'block';
+      disableButtons();
+    }
+  }
 
-function playRound() {
-  let humanChoice = getHumanChoice();
-  let computerChoice = getComputerChoice();
+  function resetGame() {
+    humanScoreCount = 0;
+    computerScoreCount = 0;
+    humanScore.textContent = humanScoreCount;
+    computerScore.textContent = humanScoreCount;
+    newGameButton.style.display = 'none';
+    message.textContent = '';
+    enableButtons();
+  }
 
-  switch (true) {
-    case humanChoice == computerChoice:
-      console.log('draw');
-      break;
-    case humanChoice == 'rock' && computerChoice == 'paper':
-    case humanChoice == 'paper' && computerChoice == 'scissors':
-    case humanChoice == 'scissors' && computerChoice == 'rock':
-      console.log('computer wins!');
-      computerScore++;
-
-      break;
-    case humanChoice == 'rock' && computerChoice == 'scissors':
-    case humanChoice == 'paper' && computerChoice == 'rock':
-    case humanChoice == 'scissors' && computerChoice == 'paper':
-      console.log('you win!');
-      humanScore++;
-      break;
+  function disableButtons() {
+    buttons.forEach((button) => {
+      button.disabled = 'disabled';
+    });
   }
-}
-
-function playGame() {
-  for (let i = 0; i < 5; i++) {
-    playRound();
+  function enableButtons() {
+    buttons.forEach((button) => {
+      button.disabled = '';
+    });
   }
-  console.log(`Score: Computer = ${computerScore}, You = ${humanScore}`);
-  if (humanScore > computerScore) {
-    console.log('You won the game!');
-  }
-  if (humanScore < computerScore) {
-    console.log('You lost the game!');
-  }
-  if (humanScore == computerScore) {
-    console.log("It's a draw!");
-  }
-}
+});
